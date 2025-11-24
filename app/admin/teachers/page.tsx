@@ -7,13 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const SUBJECTS = [
   "اللغة العربية",
@@ -21,7 +15,7 @@ const SUBJECTS = [
   "العلوم",
   "اللغة الإنجليزية",
   "التاريخ",
-    "علوم متكامله",
+  "علوم متكامله",
   "برمحة وذكاء اصطناعي",
   "الجغرافيا",
   "تربية فنية",
@@ -33,7 +27,6 @@ const SUBJECTS = [
   "الغة اسبانية",
   "تربية دينية(مسلم)",
   "تربية دينية(مسيحي)",
-
   "التربية الرياضية",
 ];
 
@@ -49,6 +42,7 @@ export default function TeachersPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
   const supabase = createClient();
 
   useEffect(() => {
@@ -78,7 +72,6 @@ export default function TeachersPage() {
     setSuccess(null);
 
     try {
-      // Create auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -113,7 +106,6 @@ export default function TeachersPage() {
 
       if (deleteProfileError) throw deleteProfileError;
 
-      // This will be done through a server action
       const response = await fetch("/api/auth/delete-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -136,12 +128,8 @@ export default function TeachersPage() {
       <div className="p-8 space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-              إدارة المدرسين
-            </h1>
-            <p className="text-slate-600 dark:text-slate-400 mt-2">
-              إنشاء وإدارة حسابات المدرسين
-            </p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white"> إدارة المدرسين </h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-2"> إنشاء وإدارة حسابات المدرسين </p>
           </div>
           <Button onClick={() => setShowForm(!showForm)} size="lg">
             {showForm ? "إلغاء" : "إضافة مدرس جديد"}
@@ -173,9 +161,7 @@ export default function TeachersPage() {
                     <Input
                       id="full_name"
                       value={formData.full_name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, full_name: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                       required
                     />
                   </div>
@@ -185,9 +171,7 @@ export default function TeachersPage() {
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                       dir="ltr"
                     />
@@ -197,7 +181,10 @@ export default function TeachersPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="subject">المادة</Label>
-                    <Select value={formData.subject} onValueChange={(value) => setFormData({ ...formData, subject: value })}>
+                    <Select
+                      value={formData.subject}
+                      onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                    >
                       <SelectTrigger id="subject">
                         <SelectValue placeholder="اختر المادة" />
                       </SelectTrigger>
@@ -216,9 +203,7 @@ export default function TeachersPage() {
                       id="password"
                       type="password"
                       value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       required
                       dir="ltr"
                     />
