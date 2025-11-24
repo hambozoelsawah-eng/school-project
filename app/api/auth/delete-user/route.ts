@@ -3,31 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    let body;
+    const { userId, email } = await request.json();
 
-    try {
-      body = await request.json();
-    } catch {
-      return NextResponse.json(
-        { error: "Invalid JSON body" },
-        { status: 400 }
-      );
-    }
-
-    const { userId, email } = body || {};
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "Missing userId" },
-        { status: 400 }
-      );
-    }
+    // Note: Deleting from Supabase Auth requires Admin API
+    // This endpoint is informational - actual deletion should be done via Supabase Admin API
+    // For now, we delete from the profiles table only
 
     return NextResponse.json({
-      message: "User profile deleted. Auth user may need admin deletion.",
+      message: "User profile deleted. Auth user may need to be deleted from Supabase admin panel.",
       userId,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: "Server failure" }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

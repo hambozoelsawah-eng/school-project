@@ -33,12 +33,8 @@ export default function AdminSettingsPage() {
   }, [])
 
   async function fetchUsers() {
-    setLoading(true)
     try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .order("created_at", { ascending: false })
+      const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false })
 
       if (error) throw error
       setUsers(data || [])
@@ -78,10 +74,7 @@ export default function AdminSettingsPage() {
 
   async function handleToggleActive(userId: string, currentStatus: boolean) {
     try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({ is_active: !currentStatus })
-        .eq("id", userId)
+      const { error } = await supabase.from("profiles").update({ is_active: !currentStatus }).eq("id", userId)
 
       if (error) throw error
       fetchUsers()
@@ -95,13 +88,11 @@ export default function AdminSettingsPage() {
     if (!confirm("هل أنت متأكد من حذف هذا المستخدم؟")) return
 
     try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({ is_active: false })
-        .eq("id", userId)
+      const { error } = await supabase.from("profiles").update({ is_active: false }).eq("id", userId)
 
       if (error) throw error
 
+      // Try to delete from auth if possible
       await fetch("/api/auth/delete-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -138,7 +129,9 @@ export default function AdminSettingsPage() {
 
       const result = await response.json()
 
-      if (!response.ok) throw new Error(result.error || "فشل تغيير كلمة المرور")
+      if (!response.ok) {
+        throw new Error(result.error || "فشل تغيير كلمة المرور")
+      }
 
       alert("تم تغيير كلمة المرور بنجاح")
       setNewPassword("")
@@ -172,7 +165,6 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* قائمة المستخدمين */}
           <div className="lg:col-span-1">
             <Card className="h-full">
               <CardHeader>
@@ -184,6 +176,7 @@ export default function AdminSettingsPage() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
+
                 <div className="space-y-2 max-h-96 overflow-y-auto">
                   {filteredUsers.map((user) => (
                     <button
@@ -191,8 +184,6 @@ export default function AdminSettingsPage() {
                       onClick={() => {
                         setSelectedUser(user)
                         setEditData(user)
-                        setShowPasswordField(false)
-                        setNewPassword("")
                       }}
                       className={`w-full text-right p-3 rounded border-2 transition-colors ${
                         selectedUser?.id === user.id
@@ -220,8 +211,7 @@ export default function AdminSettingsPage() {
             </Card>
           </div>
 
-          {/* تفاصيل المستخدم */}
-          {selectedUser ? (
+          {selectedUser && (
             <div className="lg:col-span-2 space-y-4">
               <Card>
                 <CardHeader>
@@ -278,24 +268,15 @@ export default function AdminSettingsPage() {
                         <SelectItem value="العلوم">العلوم</SelectItem>
                         <SelectItem value="اللغة الإنجليزية">اللغة الإنجليزية</SelectItem>
                         <SelectItem value="التاريخ">التاريخ</SelectItem>
-                        <SelectItem value="علوم متكامله">علوم متكامله</SelectItem>
-                        <SelectItem value="برمحة وذكاء اصطناعي">برمحة وذكاء اصطناعي</SelectItem>
                         <SelectItem value="الجغرافيا">الجغرافيا</SelectItem>
-                        <SelectItem value="تربية فنية">تربية فنية</SelectItem>
-                        <SelectItem value="زراعة">زراعة</SelectItem>
-                        <SelectItem value="عسكرية">عسكرية</SelectItem>
-                        <SelectItem value="فلسفة">فلسفة</SelectItem>
-                        <SelectItem value="اللغة الفرنسية">اللغة الفرنسية</SelectItem>
-                        <SelectItem value="اللغة الألمانية">اللغة الألمانية</SelectItem>
-                        <SelectItem value="اللغة الإسبانية">اللغة الإسبانية</SelectItem>
-                        <SelectItem value="تربية دينية (مسلم)">تربية دينية (مسلم)</SelectItem>
-                        <SelectItem value="تربية دينية (مسيحي)">تربية دينية (مسيحي)</SelectItem>
+                        <SelectItem value="الفيزياء">الفيزياء</SelectItem>
+                        <SelectItem value="الكيمياء">الكيمياء</SelectItem>
+                        <SelectItem value="الأحياء">الأحياء</SelectItem>
                         <SelectItem value="التربية الرياضية">التربية الرياضية</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  {/* تغيير كلمة المرور */}
                   <div className="border-t pt-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <Label>تغيير كلمة المرور</Label>
@@ -328,7 +309,6 @@ export default function AdminSettingsPage() {
                     )}
                   </div>
 
-                  {/* حالة الحساب */}
                   <div className="border-t pt-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <Label>حالة الحساب</Label>
@@ -341,13 +321,14 @@ export default function AdminSettingsPage() {
                     </div>
                   </div>
 
-                  {/* أزرار الحفظ والحذف */}
                   <div className="flex gap-3 pt-4 border-t">
                     <Button onClick={handleUpdateUser} className="flex-1 bg-green-600 hover:bg-green-700">
                       حفظ التغييرات
                     </Button>
                     <Button
-                      onClick={() => handleDeleteUser(selectedUser.id)}
+                      onClick={() => {
+                        handleDeleteUser(selectedUser.id)
+                      }}
                       variant="destructive"
                       className="flex-1"
                     >
@@ -357,7 +338,6 @@ export default function AdminSettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* معلومات النظام */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-sm">معلومات النظام</CardTitle>
@@ -374,7 +354,9 @@ export default function AdminSettingsPage() {
                 </CardContent>
               </Card>
             </div>
-          ) : (
+          )}
+
+          {!selectedUser && (
             <div className="lg:col-span-2">
               <Card>
                 <CardContent className="pt-6 text-center text-slate-600 dark:text-slate-400">
