@@ -263,16 +263,24 @@ export default function AdminSettingsPage() {
                         <SelectValue placeholder="اختر المادة" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="اللغة العربية">اللغة العربية</SelectItem>
-                        <SelectItem value="الرياضيات">الرياضيات</SelectItem>
-                        <SelectItem value="العلوم">العلوم</SelectItem>
-                        <SelectItem value="اللغة الإنجليزية">اللغة الإنجليزية</SelectItem>
-                        <SelectItem value="التاريخ">التاريخ</SelectItem>
-                        <SelectItem value="الجغرافيا">الجغرافيا</SelectItem>
-                        <SelectItem value="الفيزياء">الفيزياء</SelectItem>
-                        <SelectItem value="الكيمياء">الكيمياء</SelectItem>
-                        <SelectItem value="الأحياء">الأحياء</SelectItem>
-                        <SelectItem value="التربية الرياضية">التربية الرياضية</SelectItem>
+                          <SelectItem value="اللغة العربية">اللغة العربية</SelectItem>
+        <SelectItem value="الرياضيات">الرياضيات</SelectItem>
+        <SelectItem value="العلوم">العلوم</SelectItem>
+        <SelectItem value="اللغة الإنجليزية">اللغة الإنجليزية</SelectItem>
+        <SelectItem value="التاريخ">التاريخ</SelectItem>
+        <SelectItem value="علوم متكامله">علوم متكامله</SelectItem>
+        <SelectItem value="برمحة وذكاء اصطناعي">برمحة وذكاء اصطناعي</SelectItem>
+        <SelectItem value="الجغرافيا">الجغرافيا</SelectItem>
+        <SelectItem value="تربية فنية">تربية فنية</SelectItem>
+        <SelectItem value="زراعة">زراعة</SelectItem>
+        <SelectItem value="عسكرية">عسكرية</SelectItem>
+        <SelectItem value="فلسفة">فلسفة</SelectItem>
+        <SelectItem value="اللغة الفرنسية">اللغة الفرنسية</SelectItem>
+        <SelectItem value="اللغة الألمانية">اللغة الألمانية</SelectItem>
+        <SelectItem value="اللغة الإسبانية">اللغة الإسبانية</SelectItem>
+        <SelectItem value="تربية دينية (مسلم)">تربية دينية (مسلم)</SelectItem>
+        <SelectItem value="تربية دينية (مسيحي)">تربية دينية (مسيحي)</SelectItem>
+        <SelectItem value="التربية الرياضية">التربية الرياضية</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
