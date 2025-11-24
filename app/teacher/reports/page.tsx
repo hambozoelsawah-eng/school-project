@@ -245,7 +245,52 @@ export default function TeacherReportsPage() {
               <p className="text-center mb-4">التاريخ: {new Date().toLocaleDateString("ar-EG")}</p>
             </div>
 
-         
+            <Card>
+              <CardHeader className="print:hidden">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                  <CardTitle>
+                    تقرير الغياب - {months.find((m) => m.value === selectedMonth)?.label} {selectedYear}
+                  </CardTitle>
+                  <Button onClick={handlePrint} variant="outline" className="print:hidden bg-transparent">
+                    طباعة
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto" id="printable-attendance-report">
+                  <table className="w-full text-xs md:text-sm border-collapse">
+                    <thead>
+                      <tr className="bg-blue-600 text-white">
+                        <th className="p-2 text-right border">الطالب</th>
+                        <th className="p-2 text-center border">أيام الحضور</th>
+                        <th className="p-2 text-center border">أيام الغياب</th>
+                        <th className="p-2 text-center border">نسبة الحضور</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reportData.students.map((student, idx) => {
+                        const studentAttendance = attendanceData.filter(
+                          (a) => reportData.students[idx]?.name === student.name,
+                        )
+                        const present = studentAttendance.filter((a) => a.is_present).length
+                        const absent = studentAttendance.filter((a) => !a.is_present).length
+                        const total = present + absent
+                        const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : "0.0"
+
+                        return (
+                          <tr key={idx} className="border-b hover:bg-slate-50">
+                            <td className="p-2 border">{student.name}</td>
+                            <td className="p-2 text-center border text-green-600 font-bold">{present}</td>
+                            <td className="p-2 text-center border text-red-600 font-bold">{absent}</td>
+                            <td className="p-2 text-center border font-bold">{percentage}%</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
 
             <Card>
               <CardHeader className="print:hidden">
