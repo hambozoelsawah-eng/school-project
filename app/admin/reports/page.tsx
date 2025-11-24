@@ -273,52 +273,6 @@ export default function ReportsPage() {
               <p className="text-center mb-4">التاريخ: {new Date().toLocaleDateString("ar-EG")}</p>
             </div>
 
-            <Card>
-              <CardHeader className="print:hidden">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-                  <CardTitle>
-                    تقرير الغياب - {months.find((m) => m.value === selectedMonth)?.label} {selectedYear}
-                  </CardTitle>
-                  <Button onClick={handlePrint} variant="outline" className="print:hidden bg-transparent">
-                    طباعة
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto" id="printable-attendance-admin">
-                  <table className="w-full border-collapse text-xs md:text-sm">
-                    <thead>
-                      <tr className="bg-blue-600 text-white">
-                        <th className="border p-2 text-right">الطالب</th>
-                        <th className="border p-2 text-center">المادة</th>
-                        <th className="border p-2 text-center">أيام الحضور</th>
-                        <th className="border p-2 text-center">أيام الغياب</th>
-                        <th className="border p-2 text-center">نسبة الحضور</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {reportData.map((row, idx) => {
-                        const studentAttendance = attendanceData.filter((a) => a.student_id === row.student_name)
-                        const present = studentAttendance.filter((a) => a.is_present).length
-                        const absent = studentAttendance.filter((a) => !a.is_present).length
-                        const total = present + absent
-                        const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : "0.0"
-
-                        return (
-                          <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800">
-                            <td className="border p-2">{row.student_name}</td>
-                            <td className="border p-2 text-center">{row.subject}</td>
-                            <td className="border p-2 text-center text-green-600 font-bold">{present}</td>
-                            <td className="border p-2 text-center text-red-600 font-bold">{absent}</td>
-                            <td className="border p-2 text-center font-bold">{percentage}%</td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
 
             <Card>
               <CardHeader className="print:hidden">
